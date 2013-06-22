@@ -7,654 +7,321 @@
 <script type="text/javascript" src="chosen/chosen.jquery.min.js"></script>
 <script type="text/javascript" src="bootstrap/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-	$(function() {
-		var supports = {};
-		var ADCs = {};
-		supports['Alistar'] = {
-			counteredBy : [
-					{
-						who : 'Janna',
-						why : 'Can tornado combo or just slow / tornado after Ali\'s combo has been done. Can win lane trades with shield on ADC.'
-					},
-					{
-						who : 'Zyra',
-						why : 'Can entangle and trap with slow plants after Ali commits, owning him or preventing their ADC from following up. Also can keep very strong bush control with seeds/plants/spam'
-					},
-					{
-						who : 'Fiddlesticks',
-						why : 'If Ali attacks your lane you can get into position to fear their ADC and completely nullify the engagement, also the silence is very disruptive.'
-					} ]
-		};
-		supports['Blitzcrank'] = {
-			counteredBy : [
-					{
-						who : 'Leona',
-						why : 'Can block / tank Blitz-pulls, once 6 you can start winning / forcing fights due to ult.'
-					},
-					{
-						who : 'Taric',
-						why : 'Can block / tank pulls from blitz, and stun carry if get pulled. Hard to win lane though as taric, and susceptible to being baited into pull--> gank.'
-					},
-					{
-						who : 'Sona',
-						why : 'Is really good vs blitz in 2v2, can poke him down and get tanky runes and masteries to the point where blitz cant burst her if she gets pulled. Susceptible to ganks though as if she gets pulled into gank = gg.'
-					} ]
-		};
-		supports['Fiddlesticks'] = {
-			counteredBy : [
-					{
-						who : 'Soraka',
-						why : 'Can heal fid\'s poke with E and can prevent the fear-burst combo with the heal/armor buff. Wins long engagements against fid because of starcall spam and fid\'s long cds.'
-					},
-					{
-						who : 'Blitzcrank',
-						why : 'Fid\'s poke and range are too low to ween blitz down, and blitz can exploit fid\'s weak stats - especially early.'
-					},
-					{
-						who : 'Lux',
-						why : "Can poke and burst from afar, while fid's ranges are short. Shield basically counters fid's e dmg."
-					} ]
-		};
-		supports['Janna'] = {
-			counteredBy : [
-					{
-						who : 'Lulu',
-						why : "The poke outdoes janna's shield and can harass janna's lane to point of death. Janna doesn't have much response to this."
-					},
-					{
-						who : 'Taric',
-						why : "Can burst janna if she gets out of position just a tiny bit, however, a good janna should be able to keep distance and win forced trades by peeling with torando/shield/zephyr"
-					},
-					{
-						who : 'Lux',
-						why : "Can poke or burst janna from afar, thus avoiding all of janna's spells because she is out of range, and makes jannas ult irrelevent."
-					} ]
-		};
-		supports['Leona'] = {
-			counteredBy : [
-					{
-						who : 'Nunu',
-						why : "Can't be bursted by leona and can migitate dmg if leona goes on ADC, also BB + ward for bushes makes it very hard for leona to get close.",
-					},
-					{
-						who : 'Lulu',
-						why : "Can be spam poking leona from the start and leona cant win lane at 6 like she normally does because lulu ult cockblock",
-					},
-					{
-						who : 'Janna',
-						why : "Tornado should be able to interupt leona E if you keep vision on leona because it has significant travel time. Also, as long as you don’t die at level 2 to leona, you can win trades with shield.",
-					}, ]
-		};
-		supports['Lulu'] = {
-			counteredBy : [
-					{
-						who : 'Soraka',
-						why : "While she is weak early against lulu you can chug health pots and survive till ~5 where lulu starts to be outhealed hard.",
-					},
-					{
-						who : 'Sona',
-						why : "Sona can counter-harass very hard against lulu, and will win out because of heal. Things get tricky at 6 though or an early gank could swing the lane hard in either direction.",
-					},
-					{
-						who : 'Blitzcrank',
-						why : "With good lane wards from blitz you can either shutdown lulu's harass potential or earn a kill as lulu is slow and relies on moving up to poke to be successful.",
-					}, ]
-		};
-		supports['Lux'] = {
-			counteredBy : [
-					{
-						who : 'Alistar',
-						why : "His E outweighs lux's e poke and he can squish her.",
-					},
-					{
-						who : 'Blitzcrank',
-						why : "Lux dies to the golden fist",
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu's BB makes lux's skillshots miss and then can chase her down and give her the right click.",
-					}, ]
-		};
-		supports['Nunu'] = {
-			counteredBy : [
-					{
-						who : 'Sona',
-						why : "Any time nunu tries to snowball sona can harass him 2x harder with a q-> passive, and then sustain back the dmg. This means nunu is left to be BB bot which you can overtake with harass on ADC and finish with ult.",
-					},
-					{
-						who : 'Lulu',
-						why : "Can poke and control bush really hard and win trades. Her slow makes it so the nunu lane can not follow up on your harass.",
-					},
-					{
-						who : 'Soraka',
-						why : "Can starcall spam nunu's lane and win out in long fights cause nunu wont be able to burst.",
-					}, ]
-		};
-		supports['Sona'] = {
-			counteredBy : [
-					{
-						who : 'Zyra',
-						why : "Any time sona walks up to Q you can retaliate with Root + seeds which makes the sona eat a ton of dmg or waste summs.",
-					},
-					{
-						who : 'Taric',
-						why : "His strong early levels can abuse sona's weak stats, if you get small lead early = gg sona.",
-					},
-					{
-						who : 'Blitzcrank',
-						why : "If he gets first strike, especially at low levels, he can turn sona into feeder. However, if the sona survies she can turn the lane around on him. Or if he gets lots of ganks",
-					}, ]
-		};
-		supports['Soraka'] = {
-			counteredBy : [
-					{
-						who : 'Alistar',
-						why : "If he abuses soraka's weak early she gets snowballed to hell and becomes feed lane.",
-					},
-					{
-						who : 'Sona',
-						why : "While soraka can heal through most of Sona's poke, sona still is winning trades because she is forcing heal on cd. And sona can keep up with soraka's scaling and even burst if sona hits 6 first.",
-					},
-					{
-						who : 'Lux',
-						why : "Strong bush control can lead to early kills with the high burst dmg and poke on lux.",
-					}, ]
-		};
-		supports['Taric'] = {
-			counteredBy : [
-					{
-						who : 'Nunu',
-						why : "Can not be bursted by taric due to innate tankyness, bloodboil lets carry kite taric's stun better, can retaliate a stun with snowball on their ADC",
-					},
-					{
-						who : 'Alistar',
-						why : "If taric stuns ADC you can headbutt their ADC away, also if you get advantage early on ali you can snowball.",
-					},
-					{
-						who : 'Zyra',
-						why : "Can keep bush control preventing taric zoning, and has decent counter-trade if taric goes aggressive.",
-					}, ]
-		};
-		supports['Zyra'] = {
-			counteredBy : [
-					{
-						who : 'Blitzcrank',
-						why : "Blitz can keep zyra out of bushes or catch her for an easy kill. He doesn't need to really hook but rather threaten hooks to push her back or make her waste e (in which case you could go in afterwards)",
-					},
-					{
-						who : 'Nunu',
-						why : "Can push with BB making it hard for zyra to hit shots, then you can go all in if she misses her E. Can also eat plants",
-					},
-					{
-						who : 'Soraka',
-						why : "Her heal can stop zyra's catch potential with plants + root, and soraka can starcall plant to death.",
-					}, ]
-		};
-		ADCs['Ashe'] = {
-			partnersWith : [
-					{
-						who : 'Janna',
-						why : 'Janna + ashe is really good counter-trade lane, they walk up to you, you volley + tornado / shield and they get punished and never walk up to you again!',
-					},
-					{
-						who : 'Sona',
-						why : 'Sona + ashe is good harass lane, you can poke hard with volley + sona Q, good vs weak early lanes (something like kog)',
-					},
-					{
-						who : 'Zyra',
-						why : 'Zyra + ashe is similar to janna ashe, good counter-trade - better for a more fighting lane, or if you are gonna get some jungle ganks',
-					} ],
-			counteredBy : [
-					{
-						who : 'Blitzcrank',
-						why : 'Blitz good vs ashe cause she no escape and fragile.',
-					},
-					{
-						who : 'Lux',
-						why : 'Lux can abuse ashe early and use shield to avoid volley counter-harass',
-					},
-					{
-						who : 'Taric',
-						why : 'Taric can just run over ashe if with right ADC and such. Just burst 100-0 if get bush control',
-					} ]
-		};
-		ADCs["Caitlyn"] = {
-			partnersWith : [
-					{
-						who : 'Nunu',
-						why : "Nunu is great with cait cause you can just push all day long then BB nullify's cait's drop off mid game"
-					},
-					{
-						who : 'Zyra',
-						why : "Zyra cait = really strong harass, tons of bush control with traps + seeds, makes the other lane uncomfortable"
-					},
-					{
-						who : 'Lulu',
-						why : "Lulu poke, cait poke, harass really early levels and try to snowball from there - if it doesn’t work you can fall back on just pushing (double Qs clear waves)"
-					}, ],
-			counteredBy : [
-					{
-						who : 'Taric',
-						why : "Taric great vs cait cause the armor makes cait's low dmg become negligable. And can burst the second cait mis-steps."
-					},
-					{
-						who : 'Soraka',
-						why : "Soraka when she gets to about 5 starts just healing all of caits weak dmg, great if they cant punish you early."
-					},
-					{
-						who : 'Blitzcrank',
-						why : "Blitz takes cait's high control early and offsets it by just pressuring with hook - if you walk on a trap cait cant usually hit you cause if she walks up to you to hit you just hook her"
-					}, ]
-		};
-		ADCs["Corki"] = {
-			partnersWith : [
-					{
-						who : 'Leona',
-						why : "Leona + corki is classic \"commit\"/\"engage\" lane, wait / farm till ~6 unless you have some advantage, then BAM just go ham."
-					},
-					{
-						who : 'Sona',
-						why : "Sona corki is just a safe lane that can snowball if they hit 6 and burst combo, if not you can sit back and farm."
-					},
-					{
-						who : 'Blitzcrank',
-						why : "Corki is great at hard engagements early cause his E does so much dmg, blitz is good at forcing engagements with hook."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Sona',
-						why : "Sona's heal can lessen the effect of Corki's poke/trade during the early levels, and corki is susceptible to getting bursted at level 6 because of his low range."
-					},
-					{
-						who : 'Fiddlesticks',
-						why : "Fid can lock down corki with fear / silence / fear, stops him from being able to hard engage."
-					}, {
-						who : 'Blitzcrank',
-						why : "Corki's W can be interupted by blitz E - can abuse that"
-					} ]
-		};
-		ADCs["Draven"] = {
-			partnersWith : [
-					{
-						who : 'Taric',
-						why : "Taric + Draven = stun them once, chunk to 50, wait for cds, if they don’t back just go all in."
-					},
-					{
-						who : 'Lulu',
-						why : "Lulu draven = ultimate early pressure lane, both are best harassers starting at level 1 or 2. great vs weak early ADC like kog, corki"
-					},
-					{
-						who : 'Alistar',
-						why : "Alistar if on blue side with draven can own --> get 2, kill. Draven is GREAT at level 2 killing."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Zyra',
-						why : "Zyra can ww->e where draven's axe is landing, or just stop him in his tracks when he tries to be aggressive."
-					},
-					{
-						who : 'Blitzcrank',
-						why : "Blitz can hook / pressure draven's axe catch spot - so many hooks ive gotten on dravens trying to catch axes."
-					},
-					{
-						who : 'Fiddlesticks',
-						why : "Fid's interuption can stop draven's combo, and draven is a very fluid character - one fear and he loses 1-2 axes and his momentum."
-					} ]
-		};
-		ADCs["Ezreal"] = {
-			partnersWith : [
-					{
-						who : 'Sona',
-						why : "Sona ez classic all around lane, good engage with sona R ez R, good poke, good farm, good sustain."
-					},
-					{
-						who : 'Lux',
-						why : "Lux EZ a personal favorite of mine, hit a lux q and ez follows up with q/w (or e if they are low), tons of dmg! - and dem ults…"
-					},
-					{
-						who : 'Lulu',
-						why : "Lulu ez great poke / pressure lane, also you can blink on them with ez, start charge up on ult, and have lulu ult him for a cool combo."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Sona',
-						why : "There is nothing that great against ez - he is safe - but sona can kinda heal through his Q harass, and if you can survive till 6 without any big mistakes you can start to win lane a bit (or force him to get cleanse)."
-					},
-					{
-						who : 'Soraka',
-						why : "Soraka can heal through ez's harass at higher levels, but at low levels you can try to punish his low range by abusing starcall + defensive runes / masteries."
-					},
-					{
-						who : 'Taric',
-						why : "While with taric you cant WIN lane like he is supposed to, it will stop ez from going rampant and you can burn ez mana by using stun and forcing him to blink."
-					} ]
-		};
-		ADCs["Graves"] = {
-			partnersWith : [
-					{
-						who : 'Taric',
-						why : "Taric graves is classic burst, high trade. Can catch a support and 100-0 or stun an AD, chunk to 50-75, then zone or burst again."
-					},
-					{
-						who : 'Sona',
-						why : "Sona graves is similar trade style to taric, and burst at 6, but cant force it as hard - dantier."
-					},
-					{
-						who : 'Lux',
-						why : "Lux graves a great combo as well, if you catch one bind you can burst them post-6"
-					}, ],
-			counteredBy : [
-					{
-						who : 'Taric',
-						why : "Graves is all phys dmg so taric's armor negates a lot of his dmg. Also cuts grave's trade potential."
-					},
-					{
-						who : 'Blitzcrank',
-						why : "Blitz is decent vs graves, not great, grave's dash can be interupted by power fist."
-					},
-					{
-						who : 'Fiddlesticks',
-						why : "Fid can fear graves if he moves up to auto attack harass, graves is pretty safe pick though, so not that many big counters."
-					} ]
-		};
-		ADCs["Kog'Maw"] = {
-			partnersWith : [
-					{
-						who : 'Nunu',
-						why : "Nunu + kog is beast late game, and if you get ~level 6-7 you can start trading with BB'd kog attacking from max range + ults. Great if you get early gank."
-					},
-					{
-						who : 'Zyra',
-						why : "Zyra is good protector for kog, and you can kite pretty hard with slow plants + ooze. If things go wrong DOUBLE DEATH PASSIVE!"
-					},
-					{
-						who : 'Alistar',
-						why : "Alistar can headbutt people if they go up to hit kog, just a protector."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Lulu',
-						why : "Lulu can abuse kog's short range and poke him heavily with autos and Qs from the start."
-					},
-					{
-						who : 'Blitzcrank',
-						why : "No escape kog = blitz prey, and also commonly paired with weaker supports."
-					},
-					{
-						who : 'Sona',
-						why : "Sona, like lulu, can abuse Kog's low range early, and can burst at 6 if they get small advantage early."
-					} ]
-		};
-		ADCs["Miss Fortune"] = {
-			partnersWith : [
-					{
-						who : 'Sona',
-						why : "MF is best trader in the game - add in sona = supergreat trading."
-					},
-					{
-						who : 'Taric',
-						why : "Taric + mf classic aggressive lane, lots of trade, and burst potential if they keep trying to farm while low. Overall bully lane."
-					},
-					{
-						who : 'Janna',
-						why : "Janna is great with mf like sona, shield MF and her autos do all the work."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Zyra',
-						why : "Zyra can stop MF in her tracks when she goes to AA trade, negates a lot of MF's early aggression."
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu's bb can make your AD not get out positioned by strut, and the snowball is good for preventing MF from running all over your ADC"
-					},
-					{
-						who : 'Taric',
-						why : "Taric again is just distruption to prevent MF from running over your ADC. Also, mf is mostly phys."
-					} ]
-		};
-		ADCs["Sivir"] = {
-			partnersWith : [
-					{
-						who : 'Taric',
-						why : "Taric stun setting up sivir boomerang is great chunk potential, and the double auras have always been great."
-					},
-					{
-						who : 'Alistar',
-						why : "Alistar is just my dream with sivir, I always hope to get the perfect alistar headbutt into wall and sivir gets no block boomerang = ggggg. Doesn’t always work this way though :P"
-					},
-					{
-						who : 'Janna',
-						why : "Janna is good at protecting sivir, and just letting her abuse either her long range harass, or her AA trade with passive + siv W."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Alistar',
-						why : "Alistar combo goes through sivir shield, also can try to punish sivir's low range."
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu is pretty good because a BB ADC can harass sivir pretty hard, also snowball is short cd and really shuts down sivir, can go up and snowball --> force shield --> snowball again = gg."
-					},
-					{
-						who : 'Sona',
-						why : "Sona as long as you don’t get caught by boomerangs in the bushes can deal with sivir pretty well, a great sivir will be hard though."
-					} ]
-		};
-		ADCs["Tristana"] = {
-			partnersWith : [
-					{
-						who : 'Leona',
-						why : "Leona + trist = godly all-in lane."
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu + trist is actually underated lane, you trade with trist AA and aggressive snowballing, then all in with jump when they like 75-60%. Heavy def runes on nunu, no BB max pussy stuff. Also BB trist = good mid game trist."
-					},
-					{
-						who : 'Alistar',
-						why : "Alistar + trist similar to leona + trist, slightly lost its thump since alistar nerfs."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Nunu',
-						why : "Nunu shuts down trist after her initial burst (all her dmg is left to AA, which snowball > aa), and is naturally tanky enough to survive."
-					},
-					{
-						who : 'Janna',
-						why : "Janna torando interupts trist jump, and you should be able to out trade trist with shield as well."
-					},
-					{
-						who : 'Lulu',
-						why : "Lulu can shut down trist's low range early, can make it so she cant even farm if you suceed early"
-					} ]
-		};
-		ADCs["Urgot"] = {
-			partnersWith : [
-					{
-						who : 'Soraka',
-						why : "mana spam + urgot = decent, if you don’t get rocked early (1-4) you should own."
-					},
-					{
-						who : 'Taric',
-						why : "taric urgot can be a strong bully lane, urgot has high dmg early and with taric stun/shred can crush noobz"
-					}, {
-						who : 'Janna',
-						why : "Shield bonus AD + urgot harass = good."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Soraka',
-						why : "Soraka can keep urgot's harass under control, and silence ults or etc."
-					},
-					{
-						who : 'Fiddlesticks',
-						why : "Fid is pretty good with fearing urgot early and the silence is gonna make it hard for urgot to pull off ults."
-					},
-					{
-						who : 'Taric',
-						why : "Taric high armor = urgot harass dampened, and can be counter-aggressive"
-					} ]
-		};
-		ADCs["Varus"] = {
-			partnersWith : [
-					{
-						who : 'Sona',
-						why : "Solid lane, varus is good at trading with his w-e so you put sona and then the ults work well together too."
-					},
-					{
-						who : 'Lulu',
-						why : "Can poke hard with varus Q max or even just spam trade if they low range by lulu mass e-q and varus w-e"
-					},
-					{
-						who : 'Nunu',
-						why : "Varus seems to do really well with nunu's BB, gives him the mobility he misses. And you can chase down people really hard."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Blitzcrank',
-						why : "Varus needs to get close and has no escape, blitz can make it so varus can only attack from behind creeps which nullifies a lot of his potential"
-					},
-					{
-						who : 'Taric',
-						why : "Varus is susceptible to being all-in'd (especially pre-6), taric is good at this."
-					},
-					{
-						who : 'Zyra',
-						why : "We talk about varus approach being awkward - zyra adds to this. !"
-					} ]
-		};
-		ADCs["Vayne"] = {
-			partnersWith : [
-					{
-						who : 'Alistar',
-						why : "Alistar can protect her when she needs protecting, and all in when there needs to be all in'ing. Decent match up with vayne's mostly farm but sometimes own approach."
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu vayne, late game power house, early game weak, if you get 1 kill early you can snowball super hard tho."
-					},
-					{
-						who : 'Soraka',
-						why : "Soraka vayne is a decent passive lane, if you don’t get shut down 1-4 you should be able to do well later."
-					}, ],
-			counteredBy : [
-					{
-						who : 'Lulu',
-						why : "Lulu E reveals vayne's stealth as well as lulu being a ridiculous harasser to punish vaynes weak early"
-					},
-					{
-						who : 'Sona',
-						why : "Sona can harass and punish vaynes early weakness, but you have to be very careful cause if you die early as sona vs vayne its ggggg. Be careful about your warding."
-					},
-					{
-						who : 'Nunu',
-						why : "Nunu snowball stops vayne in her tracks and bb early should open up more harassment routes for your ADC."
-					} ]
-		};
+    $(function () {
+        var supports = [ "Alistar", "Blitzcrank", "Fiddlesticks", "Janna", "Leona", "Lulu", "Nami", "Nunu", "Sona", "Soraka", "Taric", "Thresh", "Zyra" ];
+        var ADCs = [ "Ashe", "Caitlyn", "Corki", "Draven", "Ezreal", "Graves", "Kog'Maw", "Miss Fortune", "Quinn", "Sivir", "Tristana", "Twitch", "Urgot", "Varus", "Vayne" ];
 
-		var key;
-		var $adcPartner = $('#AdcPartner');
-		var $adcEnemy = $('#AdcEnemy');
-		var $supportEnemy = $('#SupportEnemy');
-		var $suggestions = $('#suggestions');
-		$adcPartner.append('<option val=""></option>');
-		for (key in ADCs) {
-			$adcPartner.append('<option val="'+key+'">' + key + '</option>');
-		}
-		$adcEnemy.append('<option></option>');
-		for (key in ADCs) {
-			$adcEnemy.append('<option val="'+key+'">' + key + '</option>');
-		}
-		$supportEnemy.append('<option></option>');
-		for (key in supports) {
-			$supportEnemy.append('<option val="'+key+'">' + key + '</option>');
-		}
-		$('.chzn-select').chosen().change(getAdvice);
-		function getAdvice() {
-			var suggestions = {};
-			function addSuggestion(points, who, why) {
-				if (!suggestions[who]) {
-					suggestions[who] = {
-						who : who
-					};
-				}
-				if (suggestions[who].points) {
-					suggestions[who].points *= points;
-				} else {
-					suggestions[who].points = points;
-				}
-				if (suggestions[who].why) {
-					suggestions[who].why.push(why);
-				} else {
-					suggestions[who].why = [ why ];
-				}
-			}
-			var adcPartnerVal = $adcPartner.val();
-			if (adcPartnerVal) {
-				var partners = ADCs[adcPartnerVal].partnersWith;
-				$.each(partners, function(index, partner) {
-					addSuggestion(partners.length - index + 1, partner.who, partner.why);
-				})
-			}
-			var adcEnemyVal = $adcEnemy.val();
-			if (adcEnemyVal) {
-				var adcCounters = ADCs[adcEnemyVal].counteredBy;
-				$.each(adcCounters, function(index, counter) {
-					addSuggestion(adcCounters.length - index + 1, counter.who,
-							counter.why);
-				})
-			}
-			var supportEnemyVal = $supportEnemy.val();
-			if (supportEnemyVal) {
-				var counters = supports[supportEnemyVal].counteredBy;
-				$.each(counters, function(index, counter) {
-					addSuggestion(counters.length - index + 1, counter.who, counter.why);
-				})
-			}
-			var sortedSuggestions = [];
-			var key;
-			$.each(suggestions, function(who, suggestion) {
-				sortedSuggestions.push(suggestion);
-			});
-			sortedSuggestions.sort(function(a, b) {
-				return b.points - a.points;
-			})
-			//TODO sort array
-			$suggestions.empty();
-			if (!adcPartnerVal && !adcEnemyVal && !supportEnemyVal) {
-				$suggestions.append('<tr><td colspan="3">Fill out some of the info above to get suggestions on which support to take!</td></tr>');
-			} else {
-				$.each(sortedSuggestions, function(index, suggestion) {
-					var $whyList = $('<ul></ul>')
-					$.each(suggestion.why, function(index, reason) {
-						$whyList.append('<li>' + reason + '</li>');
-					})
-					var rowHtml = '<tr';
-					if (suggestion.who == supportEnemyVal) {
-						rowHtml += ' class="error"'
-					}
-					rowHtml += '><td>' + suggestion.points + '</td><td>' + suggestion.who
-							+ '</td><td>' + $whyList.html() + '</td></tr>';
-					$suggestions.append(rowHtml);
-				});
-			}
-		}
-		getAdvice();
-		//Reset form
-		var $resetForm = $('#resetForm');
-		$resetForm.click(function() {
-			console.log('got here');
-			$adcPartner.val('');
-			$adcPartner.trigger("liszt:updated");
-			$adcEnemy.val('');
-			$adcEnemy.trigger("liszt:updated");
-			$supportEnemy.val('');
-			$supportEnemy.trigger("liszt:updated");
-			getAdvice();
-			return false;
-		});
-	});
+        var supportReasons = {};
+        var partnerReasons = {};
+        var counterReasons = {};
+
+        for (var i in supports) {
+            supportReasons[supports[i]] = {};
+            for (var i2 in supports) {
+                supportReasons[supports[i]][supports[i2]] = supports[i2] + ' is good against ' + supports[i];
+            }
+        }
+        for (var i in ADCs) {
+            partnerReasons[ADCs[i]] = {};
+            counterReasons[ADCs[i]] = {};
+            for (var i2 in supports) {
+                partnerReasons[ADCs[i]][supports[i2]] = supports[i2] + ' is good with ' + ADCs[i];
+                counterReasons[ADCs[i]][supports[i2]] = supports[i2] + ' is good against ' + ADCs[i];
+            }
+        }
+
+        supportReasons["Alistar"]["Lulu"] = "Alistar at his heart is an anti-engage laner, someone who headbutts/pulvs away when they attack your adc. Lulu crushes this playstyle because she can harass through his heal and if ali tries to go on her, alistar will have to get out of position to attack her and her lane will win the trade because of this.";
+        supportReasons["Alistar"]["Zyra"] = "Zyra can pressure the alistar's ADC without him being able to do anything since zyra's presence mostly come sfrom her plants, which alistar cant protect his ADC from. Also if alistar attempts to go aggressive on zyra she can just e-ww and run away and alistar will be stuck there tanking plants.";
+        supportReasons["Alistar"]["Janna"] = "First, Janna can interupt alistar's headbutt (and thus headbutt-pulv combo) which really hurts his gank-assiting potential. Also, janna supports her adc with shields/cc which leaves alistar unable to do anything and it turns into basically a 2v1 as most adcs outrange alistar's range (and janna is super far back).";
+
+        supportReasons["Blitzcrank"]["Leona"] = "Leona counters blitz as when blitz goes in for a hook leona can actually go and kill their adc and tank with her W. Blitz however can still hook leona into a gank and kill her, so be careful.	";
+        supportReasons["Blitzcrank"]["Alistar"] = "Alistar is great at nullifying blitz's strengths. If alistar is hooked he can just tank it or even turn it around if he is hooked into the adc, while if blitz hooks ali's adc he can protect by headbutting their adc away cancelling out his dmg. Also when it comes to ganks (which you should always call-for in a blitz lane), ali is great at setting up and turning around gank situations.	";
+        supportReasons["Blitzcrank"]["Taric"] = "Taric has the tankyness and the cc to be able to stop blitz from being effective, as if he gets hooked he can survive and if his adc gets hooked he can save him with a stun + armor buff. Also in 3v3 gank situations he is a great facilitator with his hard cc and significant burst dmg.	";
+
+        supportReasons["Janna"]["Blitzcrank"] = "Blitz is great vs janna because she excels at being able to \"stop approaches\" whether it be taric running up to stun or leona being kocked up while zenith blading. Blitz cant be stopped and pulls you in to their ADC a place you dont want to be.	";
+        supportReasons["Janna"]["Sona"] = "Sona is a tough match vs janna because with her sustain and her harass she can win trades very easily. then since she can engage from a range with ultimaet it can leave you in the dust because it is hard to ultimate since the sona is far away.	";
+        supportReasons["Janna"]["Nami"] = "Nami is similar to sona matchup but doesnt do as much dmg and has to pick her harass opportunities more specifically. However, she still has the harass-sustain combination that makes it tough for a janna lane, as you will usually go even in trades with the shield and their harass, but they will sustain up afterwards while you dont have that ability :(.	";
+
+        supportReasons["Leona"]["Janna"] = "Janna is classic leona counter because her hard disengage and her ability to stop leona e with your q. Just be careful though cause if she catches you off guard (esp. before you get your tanky items like sightstone rush) you can get 1 shot. watch for level 2 cheese and level 6 cheese and you should win lane via protecting your carry.	";
+        supportReasons["Leona"]["Alistar"] = "Ali is good anti-engage. If leona goes on you - stun / escape / ult. if he goes on your adc then headbutt their adc away and stun if necessary - cleanish disengage. Then with ali sustain you can hopefully win trade wars with your carries, but if they have a carry that just clearly beats yours (draven vs ashe per say) then all you can do is really just stop them from killing you, farm, and hope to win with ganks (which ali is great at facilitating) and such.	";
+        supportReasons["Leona"]["Taric"] = "Taric is one of the few people who can go even with leona. if she initiates you can stun their carry and hopefully come out with an even trade. if leona goes on you you are tanky enough due to w and high base hp. most other melee supports dont have the combination of hard stopper and tankyness (nunu, thresh blitz)	";
+
+        supportReasons["Lulu"]["Soraka"] = "Lulu's main strength is in her harass, especially at higher levels. Soraka is someone who scales up with levels and peaks at 5-7-9 similar to lulu. Soraka counterbalances this and can start to win trades for your lane.	";
+        supportReasons["Lulu"]["Sona"] = "Sona has the strong trading potential to counter-act lulu's hyper-aggressive harass potential. Lulu will need to move up to harass your carry or to harass sona so this is when sona can Q and retreat, healing up in the meanwhile and over time will win more and more trades and can all-in with crescendo.	";
+        supportReasons["Lulu"]["Blitzcrank"] = "Blitz's raw aggression from extremely low levels makes him counter lulu. with thresh or leona they only really start getting aggressive at the 6ish mark, while lulu gets her ult which can counter that aggression somewhat. but at level 2-3 lulu is defenseless, and this is where a good blitz pull can snowball the lane into oblivion	";
+
+        supportReasons["Nami"]["Blitzcrank"] = "Nami's strengths lie in her ability to stop agressive laners from getting in range to hurt her, and winning trades with her poke and sustain. However, blitz undermines these strengths by being able to pull her into danger from afar, blazing past her strengths. And once nami is in close range she is very fragile and slow leading to easy deaths.	";
+        supportReasons["Nami"]["Leona"] = "Leona's hard engage ability, especially after 6, puts immense pressure on nami and nami's ADC and if nami makes a slight mistake leona will punish super hard and once leona lanes get a tiny lead they will snowball it to hell.	";
+        supportReasons["Nami"]["Sona"] = "Sona is good vs nami because she can sustain through nami's poke, however sona can not poke very effectively without putting herself in danger of getting nami bubbled, so it makes this lane a standoff. However, after 6 sona can all-in nami's lane and win easily after an even lane, and with gank pressure sona can crush even harder.	";
+
+        supportReasons["Nunu"]["Sona"] = "Nunu is hard countered by sona because of her range and her high damage potential. If nunu ever tries to harass with snowball sona will just demolish the trade with her Q+passive dealing 2x as much damage as snowball, and having sustain on top of it. In all-in situations its even worse as sona will burst down nunu's adc before nunu can even reach sona's adc to snowball.	";
+        supportReasons["Nunu"]["Lulu"] = "Lulu's harass not only essentially out-ranges nunu, but focuses the adc which leaves nunu's BB to shame and nunu's lack of trading potential makes him get crushed so hard by the harass of lulu.	";
+        supportReasons["Nunu"]["Janna"] = "Nunu's strengths come in by being able to buff the adc and harass/tank with snowball. Janna can buff her adc even harder with shield and will bring more cc and damage to the table.	";
+
+        supportReasons["Sona"]["Leona"] = "Sona is most susceptible to all-ins. Leona is the best engager starting from even low levels, blitz etc all are more situational and once leona hits 6 she has a strong long range reliable engage. If sona can su rvive that long and stay even then she can maybe fight, but that rarely occurs.	";
+        supportReasons["Sona"]["Thresh"] = "Thresh has enough harass damage with flay and flay's passive AA dmg that Sona can never really harass effectively, and she has to be constantly on the defensive due to thresh's hook and all-in potential that Sona's presence in lane is crushed	";
+        supportReasons["Sona"]["Blitzcrank"] = "Blitz can be aggressive from the start and if he gets 1 good engage on Sona then Sona's lane turns into a serious feedfest as she just becomes underleveled and so fragile that blitz is a constant threat.	";
+
+        supportReasons["Soraka"]["Nami"] = "Nami has the perfect balance of sustain and all-in potential to counter soraka. Soraka tries to out-trade you with her heal? you have your heal and more damage than her. And you still have the potential to abuse soraka in an all-in engagement due to your high cc and speed up you can chase her down the lane easily.	";
+        supportReasons["Soraka"]["Leona"] = "Leona can beat soraka because soraka is very weak at low levels (especially 2-4). Leona's power spike is at level 3 and if she can kill soraka then she can zone soraka's lane getting them SERIOUSLY behind and outleveled and thus crushing the lane even harder. Soraka doesn't have much to stop this leona level 2/3 all-in. However, something like a soraka-cait lane can beat leona by just shoving into tower 24/7 with piltover peacemaker and infuse spam.	";
+        supportReasons["Soraka"]["Blitzcrank"] = "Blitz is strong pick against most sorakas. If he can get a kill early on her it is hell for the soraka lane. However, if the soraka goes REALLY heavy defensive runes, and gets a few points in her Q, she can win the matchup by baiting hooks and winning trades after getting hooked. However, this is a hard matchup non-the-less	";
+
+        supportReasons["Taric"]["Nunu"] = "Nunu is perfect against taric for some reason, although nunu isnt the best most viable support atm if he gets a support-oriented buff he would be great pick. Taric cant stun nunu or else they will get owned, and nunu can buff the carry so he will kite taric's poor approach.	";
+        supportReasons["Taric"]["Zyra"] = "Tarics burst potential was nerfed so more squishy supports who can stop his approach became more viable. zyra is great at stopping him when he tries to move up and stun someone with her e-ww combo. and in hard engagements you ult and gggggg - taric excels at these long engagements due to his auras.	";
+        supportReasons["Taric"]["Nami"] = "Nami is decent vs taric because his burst was nerfed hard. and she can stop him when he approaches to stun with your Q, that is what you want with nami someone to run up to you so you can land an easy bubble and kite with slow attacks on adc. also you can heal up his small trades.	";
+
+        supportReasons["Thresh"]["Lulu"] = "Lulu can stop thresh from being able to harass with her poke threat. she can also harass through creeps so she can stay relatively safe from the hook while still being a threat (opposed to like lux who has to shoot at an angle). If a hook hits (especially post-6 by lulu) she can protect pretty easily with her ult knockup and the cc from w and her shield from E - although if you get behind early it can be a tough matchup.	";
+        supportReasons["Thresh"]["Alistar"] = "Alistar can stop thresh's harass with his sustain, and if thresh lands a hook on ali it is not as big an issue cause he has high health, and if he lands it in your ADC you can headbutt their adc away and stun them to protect your adc.	";
+        supportReasons["Thresh"]["Nunu"] = "Nunu can protect the adc if hooked by snowballing their adc which stops them in their tracks, and also is one of the highest hps in the game as a support so he is pretty tanky if he is hit himself. Also his bloodboil makes it a pain for thresh to try to hit hooks or to harass, if you have like a cait or vayne vs thresh nunu is perfect. Unfortuneatly nunu isnt great support at this point in the game - if he gets buffs or w/e for support nunu he can be viable.	";
+
+        supportReasons["Zyra"]["Blitzcrank"] = "Blitz can get that early hook on zyra to lead to just snowballing .. but the thing is zyra actually has strong bush control so it makes it hard for blitz - not the most favorable counter matchups but one of the few supports who can turn a zyra lane into a feedfest	";
+        supportReasons["Zyra"]["Soraka"] = "Soraka can heal her harass damage negating zyra's all in potential and she also can kill plants with her q which isnt too bad but isnt the best either. .. in general for zyra lane to win zyra hopes the opponents come up to harass so she can hit her easy e-ww, if they dont come up then she cant easily combo and the other lane can win over time. soraka aids this playstyle	";
+        supportReasons["Zyra"]["Nunu"] = "Nunu can eat the plants (he should get a special buff from his newfangled q shouldnt he? :P) and the bloodboil makes it so it is easier for your carry to dodge. also this will help your carry win 1v1 trades with their ADC when the zyra cant get there in time cause shes slow as an old woman.	";
+
+        supportReasons["Fiddlesticks"]["Thresh"] = "Thresh is perfect against fiddle because he can counter-trade the early crow harass from fiddle, abuse fiddle's squishyness with his hooks, and disable the crap out of fiddle with his e-q-r.	";
+        supportReasons["Fiddlesticks"]["Leona"] = "Leona can engage on fiddle pre-5 and kill them then snowball the lane very hard. however if fid can survive till ~6 they can start winning trades by fearing the adc if the leona engages. but it is a VERY scary first 5 levels, and she ends up usually winning :(	";
+        supportReasons["Fiddlesticks"]["Janna"] = "Janna can abuse fiddle's poor approach (he is slow and has to get in close range to fear, janna can stop him with her long range spells, allowing for him to get chunked in the process). Also janna can ult his ult and just be very annoying to him.	";
+
+        partnerReasons["Ashe"]["Janna"] = "Janna + ashe is really good counter-trade lane, they walk up to you, you volley + tornado / shield and they get punished and never walk up to you again!";
+        partnerReasons["Ashe"]["Sona"] = "Sona + ashe is good harass lane, you can poke hard with volley + sona Q, good vs weak early lanes (something like kog)";
+        partnerReasons["Ashe"]["Zyra"] = "Zyra + ashe is similar to janna ashe, good counter-trade - better for a more fighting lane, or if you are gonna get some jungle ganks";
+        counterReasons["Ashe"]["Blitzcrank"] = "Blitz good vs ashe cause she no escape and fragile.";
+
+        counterReasons["Caitlyn"]["Soraka"] = "Soraka when she gets to about 5 starts just healing all of caits weak dmg, great if they cant punish you early.";
+        counterReasons["Caitlyn"]["Taric"] = "Taric great vs cait cause the armor makes cait's low dmg become negligable. And can burst the second cait mis-steps.";
+        counterReasons["Caitlyn"]["Blitzcrank"] = "Blitz takes cait's high control early and offsets it by just pressuring with hook - if you walk on a trap cait cant usually hit you cause if she walks up to you to hit you just hook her";
+
+        partnerReasons["Corki"]["Leona"] = "Leona + corki is classic \"commit\"/\"engage\" lane, wait / farm till ~6 unless you have some advantage, then BAM just go ham.";
+        partnerReasons["Corki"]["Sona"] = "Sona corki is just a safe lane that can snowball if they hit 6 and burst combo, if not you can sit back and farm.";
+        counterReasons["Corki"]["Sona"] = "Sona's heal can lessen the effect of Corki's poke/trade during the early levels, and corki is susceptible to getting bursted at level 6 because of his low range.";
+
+        counterReasons["Draven"]["Zyra"] = "Zyra can ww->e where draven's axe is landing, or just stop him in his tracks when he tries to be aggressive.";
+
+        partnerReasons["Ezreal"]["Sona"] = "Sona ez classic all around lane, good engage with sona R ez R, good poke, good farm, good sustain.";
+        partnerReasons["Ezreal"]["Lulu"] = "Lulu ez great poke / pressure lane, also you can blink on them with ez, start charge up on ult, and have lulu ult him for a cool combo.";
+
+        partnerReasons["Graves"]["Taric"] = "Taric graves is classic burst, high trade. Can catch a support and 100-0 or stun an AD, chunk to 50-75, then zone or burst again.";
+        counterReasons["Graves"]["Taric"] = "Graves is all phys dmg so taric's armor negates a lot of his dmg. Also cuts grave's trade potential.";
+
+        partnerReasons["Kog'Maw"]["Alistar"] = "Alistar can headbutt people if they go up to hit kog, just a protector.";
+        counterReasons["Kog'Maw"]["Lulu"] = "Lulu can abuse kog's short range and poke him heavily with autos and Qs from the start.";
+        counterReasons["Kog'Maw"]["Blitzcrank"] = "No escape kog = blitz prey, and also commonly paired with weaker supports.";
+
+        partnerReasons["Miss Fortune"]["Sona"] = "MF is best trader in the game - add in sona = supergreat trading.";
+        counterReasons["Miss Fortune"]["Zyra"] = "Zyra can stop MF in her tracks when she goes to AA trade, negates a lot of MF's early aggression.";
+        counterReasons["Miss Fortune"]["Taric"] = "Taric again is just distruption to prevent MF from running over your ADC. Also, mf is mostly phys.";
+        counterReasons["Miss Fortune"]["Alistar"] = "Distruption to prevent MF from running over your ADC.";
+
+        partnerReasons["Sivir"]["Janna"] = "Janna is good at protecting sivir, and just letting her abuse either her long range harass, or her AA trade with passive + siv W.";
+        partnerReasons["Sivir"]["Alistar"] = "Alistar is just my dream with sivir, I always hope to get the perfect alistar headbutt into wall and sivir gets no block boomerang = ggggg. Doesn’t always work this way though :P";
+        counterReasons["Sivir"]["Nunu"] = "Nunu is pretty good because a BB ADC can harass sivir pretty hard, also snowball is short cd and really shuts down sivir, can go up and snowball --> force shield --> snowball again = gg.";
+
+        partnerReasons["Tristana"]["Alistar"] = "Alistar + trist similar to leona + trist, slightly lost its thump since alistar nerfs.";
+        partnerReasons["Tristana"]["Leona"] = "Leona + trist = godly all-in lane.";
+        counterReasons["Tristana"]["Janna"] = "Janna torando interupts trist jump, and you should be able to out trade trist with shield as well.";
+        counterReasons["Tristana"]["Nunu"] = "Nunu shuts down trist after her initial burst (all her dmg is left to AA, which snowball > aa), and is naturally tanky enough to survive.";
+
+        partnerReasons["Urgot"]["Taric"] = "taric urgot can be a strong bully lane, urgot has high dmg early and with taric stun/shred can crush noobz";
+        partnerReasons["Urgot"]["Soraka"] = "mana spam + urgot = decent, if you don’t get rocked early (1-4) you should own.";
+        counterReasons["Urgot"]["Soraka"] = "Soraka can keep urgot's harass under control, and silence ults or etc.";
+
+        partnerReasons["Varus"]["Sona"] = "Solid lane, varus is good at trading with his w-e so you put sona and then the ults work well together too.";
+        counterReasons["Varus"]["Blitzcrank"] = "Varus needs to get close and has no escape, blitz can make it so varus can only attack from behind creeps which nullifies a lot of his potential";
+
+        partnerReasons["Vayne"]["Nunu"] = "Nunu vayne, late game power house, early game weak, if you get 1 kill early you can snowball super hard tho.";
+        counterReasons["Vayne"]["Lulu"] = "Lulu E reveals vayne's stealth as well as lulu being a ridiculous harasser to punish vaynes weak early";
+        counterReasons["Vayne"]["Sona"] = "Sona can harass and punish vaynes early weakness, but you have to be very careful cause if you die early as sona vs vayne its ggggg. Be careful about your warding.";
+
+
+        var SupportRankings =
+        {
+            "Alistar": ["Lulu", "Zyra", "Janna"],
+            "Blitzcrank": ["Leona", "Alistar", "Taric"],
+            "Janna": ["Blitzcrank", "Sona", "Nami"],
+            "Leona": ["Janna", "Alistar", "Taric"],
+            "Lulu": ["Soraka", "Sona", "Blitzcrank"],
+            "Nami": ["Blitzcrank", "Leona", "Sona"],
+            "Nunu": ["Sona", "Lulu", "Janna"],
+            "Sona": ["Leona", "Thresh", "Blitzcrank"],
+            "Soraka": ["Nami", "Leona", "Blitzcrank"],
+            "Taric": ["Nunu", "Zyra", "Nami"],
+            "Thresh": ["Lulu", "Alistar", "Nunu"],
+            "Zyra": ["Blitzcrank", "Janna", "Soraka"],
+            "Elise": ["Alistar", "Taric", "Leona"],
+            "Fiddlesticks": ["Thresh", "Leona", "Janna"],
+        };
+
+        var ADCrankings = {
+            "Ashe": {
+                "partners": [ "Janna", "Sona", "Zyra" ],
+                "counters": [ "Leona", "Thresh", "Blitzcrank" ]
+            },
+            "Caitlyn": {
+                "partners": [ "Janna", "Nami", "Elise" ],
+                "counters": [ "Soraka", "Taric", "Blitzcrank" ]
+            },
+            "Corki": {
+                "partners": [ "Leona", "Lulu", "Sona" ],
+                "counters": [ "Lulu", "Thresh", "Sona" ]
+            },
+            "Draven": {
+                "partners": [ "Thresh", "Leona", "Janna" ],
+                "counters": [ "Thresh", "Zyra", "Nami" ]
+            },
+            "Ezreal": {
+                "partners": [ "Sona", "Lulu", "Taric" ],
+                "counters": [ "Thresh", "Lulu", "Sona" ]
+            },
+            "Graves": {
+                "partners": [ "Taric", "Janna", "Blitzcrank" ],
+                "counters": [ "Thresh", "Taric", "Soraka" ]
+            },
+            "Kog'Maw": {
+                "partners": [ "Nami", "Janna", "Alistar" ],
+                "counters": [ "Lulu", "Blitzcrank", "Thresh" ]
+            },
+            "Miss Fortune": {
+                "partners": [ "Nami", "Thresh", "Sona" ],
+                "counters": [ "Zyra", "Taric", "Alistar" ]
+            },
+            "Quinn": {
+                "partners": [ "Lulu", "Nami", "Leona" ],
+                "counters": [ "Thresh", "Lulu", "Sona" ]
+            },
+            "Sivir": {
+                "partners": [ "Janna", "Nami", "Alistar" ],
+                "counters": [ "Nunu", "Lulu", "Leona" ]
+            },
+            "Tristana": {
+                "partners": [ "Nami", "Alistar", "Leona" ],
+                "counters": [ "Janna", "Nami", "Nunu" ]
+            },
+            "Twitch": {
+                "partners": [ "Leona", "Lulu", "Nami" ],
+                "counters": [ "Leona", "Thresh", "Lulu" ]
+            },
+            "Urgot": {
+                "partners": [ "Taric", "Soraka", "Thresh" ],
+                "counters": [ "Soraka", "Nami", "Blitzcrank" ]
+            },
+            "Varus": {
+                "partners": [ "Zyra", "Nami", "Sona" ],
+                "counters": [ "Blitzcrank", "Leona", "Thresh" ]
+            },
+            "Vayne": {
+                "partners": [ "Lulu", "Nami", "Nunu" ],
+                "counters": [ "Lulu", "Sona", "Leona" ]
+            }
+        };
+
+
+        var key;
+        var $adcPartner = $('#AdcPartner');
+        var $adcEnemy = $('#AdcEnemy');
+        var $supportEnemy = $('#SupportEnemy');
+        var $suggestions = $('#suggestions');
+        $adcPartner.append('<option val=""></option>');
+        for (key in ADCs) {
+            $adcPartner.append('<option val="' + ADCs[key] + '">' + ADCs[key] + '</option>');
+        }
+        $adcEnemy.append('<option></option>');
+        for (key in ADCs) {
+            $adcEnemy.append('<option val="' + ADCs[key] + '">' + ADCs[key] + '</option>');
+        }
+        $supportEnemy.append('<option></option>');
+        for (key in supports) {
+            $supportEnemy.append('<option val="' + supports[key] + '">' + supports[key] + '</option>');
+        }
+        $('.chzn-select').chosen().change(getAdvice);
+        function getAdvice() {
+            var suggestions = {};
+            function addSuggestion(points, who, why) {
+                if (!suggestions[who]) {
+                    suggestions[who] = {
+                        who: who
+                    };
+                }
+                if (suggestions[who].points) {
+                    suggestions[who].points *= points;
+                } else {
+                    suggestions[who].points = points;
+                }
+                
+                if (!suggestions[who].why) {
+                    suggestions[who].why = [];
+                }
+                if (why) {
+                    suggestions[who].why.push(why);
+                }
+            }
+
+            var adcPartnerVal = $adcPartner.val();
+            if (adcPartnerVal) {
+                var partners = ADCrankings[adcPartnerVal].partners;
+                for (var i in partners) {
+                    addSuggestion(partners.length - i + 1, partners[i], partnerReasons[adcPartnerVal][partners[i]]);
+                }
+            }
+
+            var adcEnemyVal = $adcEnemy.val();
+            if (adcEnemyVal) {
+                var adcCounters = ADCrankings[adcEnemyVal].counters;
+                for (var i in adcCounters) {
+                    addSuggestion(adcCounters.length - i + 1, adcCounters[i], counterReasons[adcEnemyVal][adcCounters[i]]);
+                }
+            }
+
+            var supportEnemyVal = $supportEnemy.val();
+            if (supportEnemyVal) {
+                var counters = SupportRankings[supportEnemyVal];
+                for (var i in counters) {
+                    addSuggestion(counters.length - i + 1, counters[i], supportReasons[supportEnemyVal][counters[i]]);
+                }
+            }
+
+            var sortedSuggestions = [];
+            var key;
+            $.each(suggestions, function (who, suggestion) {
+                sortedSuggestions.push(suggestion);
+            });
+            sortedSuggestions.sort(function (a, b) {
+                return b.points - a.points;
+            })
+            
+            $suggestions.empty();
+            if (!adcPartnerVal && !adcEnemyVal && !supportEnemyVal) {
+                $suggestions.append('<tr><td colspan="3">Fill out some of the info above to get suggestions on which support to take!</td></tr>');
+            } else {
+                $.each(sortedSuggestions, function (index, suggestion) {
+                    var $whyList = $('<ul></ul>')
+                    $.each(suggestion.why, function (index, reason) {
+                        $whyList.append('<li>' + reason + '</li>');
+                    })
+                    var rowHtml = '<tr';
+                    if (suggestion.who == supportEnemyVal) {
+                        rowHtml += ' class="error"'
+                    }
+                    rowHtml += '><td>' + suggestion.points + '</td><td>' + suggestion.who
+                            + '</td><td>' + $whyList.html() + '</td></tr>';
+                    $suggestions.append(rowHtml);
+                });
+            }
+        }
+        getAdvice();
+        //Reset form
+        var $resetForm = $('#resetForm');
+        $resetForm.click(function () {
+            console.log('got here');
+            $adcPartner.val('');
+            $adcPartner.trigger("liszt:updated");
+            $adcEnemy.val('');
+            $adcEnemy.trigger("liszt:updated");
+            $supportEnemy.val('');
+            $supportEnemy.trigger("liszt:updated");
+            getAdvice();
+            return false;
+        });
+    });
 </script>
 <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css"
 	type="text/css" />
@@ -728,6 +395,7 @@ body {
 						target="_blank"> guide by Spellsy</a>
 				</p>
 				<p>Webapp programmed by Nebu Pookins.</p>
+                <p>Updated to 3.7 by fryguy from the <a href="http://i.imgur.com/UM3rilD.jpg">updated guide</a></p>
 			</div>
 			<div class="modal-footer">
 				<button class="btn btn-primary" data-dismiss="modal">Got
